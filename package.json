@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-yidun-alive-detect",
+  "version": "0.1.0",
+  "description": "yidun alive detect cordova plugin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cordova",
+    "phonegap",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "android",
+    "ios",
+    "ionic",
+    "yidun",
+    "alive-detect",
+    "活体检测",
+    "易盾"
+  ],
+  "author": "yidun",
+  "license": "Apache 2.0",
+  "homepage": "https://github.com/yidun/alive-cordova-plugin"
+}
