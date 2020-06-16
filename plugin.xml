@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="yidun-alive-detect" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-yidun-alive-detect" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>cordova-plugin-yidun-alive-detect</name>
     <js-module name="cordova-plugin-yidun-alive-detect" src="www/cordova-plugin-yidun-alive-detect.js">
         <clobbers target="window.YidunAliveDetect" />
