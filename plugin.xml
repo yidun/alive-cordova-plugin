@@ -52,7 +52,7 @@
 
       <header-file src="src/ios/NTESLiveCameraImage.h" />
       <source-file src="src/ios/NTESLiveCameraImage.m" />
-    <podspec>
+      <podspec>
          <config>
            <source url="https://github.com/CocoaPods/Specs.git"/>
          </config>
@@ -60,5 +60,8 @@
            <pod name="NTESLiveDetect" />
          </pods>
        </podspec>
+       <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+          <string>使用相机</string>
+        </config-file>
     </platform>
 </plugin>
