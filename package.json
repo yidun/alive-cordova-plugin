@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-yidun-alive-detect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "yidun alive detect cordova plugin",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -50,12 +50,13 @@
         NSNumber *numberTime  = (NSNumber *)(command.arguments[5]);
         timeout = [numberTime intValue];
         if (timeout <= 0) {
-            timeout = 30000;
+            timeout = 30;
+        } else {
+            timeout = timeout / 1000;
         }
            
-        NSNumber *numberBussnessId  = (NSNumber *)(command.arguments[6]);
-        bussnessId = [numberBussnessId stringValue];
-        self.bussnessId = bussnessId;
+        NSString *numberBussnessId  = (NSString *)(command.arguments[6]);
+        self.bussnessId = numberBussnessId;
     } else {
         
     }
