@@ -38,21 +38,18 @@ public class YdCameraPreview extends CordovaPlugin {
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "-----------------onStop-------------");
+        stopDetect();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        internalInit();
+        if (cameraPreview != null) {
+            cameraPreview.setVisibility(View.INVISIBLE);
+        }
         Log.d(TAG, "-----------------onStart-------------");
     }
-
-    //    @Override
-//    public void onResume(boolean multitasking) {
-//        super.onResume(multitasking);
-//    //    internalInit();
-//        Log.d(TAG, "-----------------onResume-------------");
-//    }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -98,6 +95,8 @@ public class YdCameraPreview extends CordovaPlugin {
 
 
     public void init(JSONArray options) {
+        Log.d(TAG, "-----------------onStart-------------");
+        internalInit();
         try {
             int x = options.getInt(0);
             int y = options.getInt(1);
@@ -134,10 +133,6 @@ public class YdCameraPreview extends CordovaPlugin {
             }
         });
 
-//        if (cameraPreview.getVisibility() == View.INVISIBLE) {
-//            cameraPreview.setVisibility(View.VISIBLE);
-//        }
-//        aliveDetector.startDetect();
         Log.d(TAG, "component startDetect");
     }
 
@@ -252,7 +247,7 @@ public class YdCameraPreview extends CordovaPlugin {
 
             @Override
             public void onError(int code, String msg, String token) {
-                Log.d(TAG, "onError callback");
+                Log.d(TAG, "onError callback, msg:" + msg);
                 final JSONObject callBackJson = new JSONObject();
                 try {
                     callBackJson.put("error_code", code);
