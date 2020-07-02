@@ -29,7 +29,8 @@ meteor add cordova:cordova-plugin-yidun-alive-detect@X.X.X
   <string>Allow the app to use your camera</string>
 </gap:config-file>
 ```
-3.app接入活体设置（如权限设置等）请参考易盾文档
+3. ios编译需安装pod环境。配置好开发者账号即可编译
+4.app接入活体设置（如权限设置等）请参考易盾文档
 
 #### Android Quirks
 
@@ -84,9 +85,14 @@ meteor add cordova:cordova-plugin-yidun-alive-detect@X.X.X
   yidunAliveDetector.startDetect()
 ```
 
-### 结束检测
+### 停止检测
 ```js
   yidunAliveDetector.stopDetect()
+```
+
+### 移除检测
+```js
+  yidunAliveDetector.removeDetect()
 ```
 
 ### 动作类型映射

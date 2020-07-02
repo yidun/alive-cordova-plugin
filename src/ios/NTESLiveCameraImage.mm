@@ -55,8 +55,8 @@
             timeout = timeout / 1000;
         }
            
-        NSString *numberBussnessId  = (NSString *)(command.arguments[6]);
-        self.bussnessId = numberBussnessId;
+        NSString *bussnessId  = (NSString *)(command.arguments[6]);
+        self.bussnessId = bussnessId;
     } else {
         
     }
@@ -75,7 +75,7 @@
     self.command = command;
        
     __weak __typeof(self)weakSelf = self;
-    [self.detector startLiveDetectWithBusinessID:@"6a1a399443a54d31b91896a4208bf6e0" actionsHandler:^(NSDictionary * _Nonnull params) {
+    [self.detector startLiveDetectWithBusinessID:self.bussnessId actionsHandler:^(NSDictionary * _Nonnull params) {
             dispatch_async(dispatch_get_main_queue(), ^{
             NSString *actions = [params objectForKey:@"actions"];
             NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -194,6 +194,10 @@
     
     [dict setValue:msg forKey:@"msg"];
     return dict;
+}
+
+- (void)remove:(CDVInvokedUrlCommand*)command {
+    [self stopDetect:command];
 }
 
 - (void)dealloc {

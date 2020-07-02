@@ -53,6 +53,10 @@ YidunAliveDetect.prototype.stopDetect = function() {
   exec(this.onSuccess, this.onError, PLUGIN_NAME, "stopDetect",[]);
 };
 
+YidunAliveDetect.prototype.removeDetect = function() {
+  exec(this.onSuccess, this.onError, PLUGIN_NAME, "remove",[]);
+}
+
 YidunAliveDetect.DETECT_ACTION_TYPES = {
   '0': '正视前方',
 	'1': '向右转头',

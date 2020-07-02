@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)stopDetect:(CDVInvokedUrlCommand*)command;
 
+- (void)remove:(CDVInvokedUrlCommand*)command;
+
 @end
 
 NS_ASSUME_NONNULL_END

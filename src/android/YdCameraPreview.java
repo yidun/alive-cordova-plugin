@@ -15,13 +15,10 @@ import com.netease.nis.alivedetected.NISCameraPreview;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.android.CameraBridgeViewBase;
-
-import java.util.logging.Logger;
 
 /**
  * Created by hzhuqi on 2020/6/11
@@ -45,10 +42,10 @@ public class YdCameraPreview extends CordovaPlugin {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "-----------------onStart-------------");
         if (cameraPreview != null) {
             cameraPreview.setVisibility(View.INVISIBLE);
         }
-        Log.d(TAG, "-----------------onStart-------------");
     }
 
     @Override
@@ -60,7 +57,6 @@ public class YdCameraPreview extends CordovaPlugin {
         boolean isSuccess = false;
         Log.d(TAG, "action:" + action + " args:" + args);
         if ("init".equals(action)) {
-            //    internalInit();
             cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -74,6 +70,9 @@ public class YdCameraPreview extends CordovaPlugin {
         } else if ("stopDetect".equals(action)) {
             stopDetect();
             isSuccess = true;
+        } else if ("remove".equals(action)) {
+            remove();
+            isSuccess = true;
         } else {
             callbackContext.error("invalid action");
         }
@@ -83,8 +82,10 @@ public class YdCameraPreview extends CordovaPlugin {
     protected NISCameraPreview getPreview(Context context, ViewGroup parent) {
         if (cameraContainer == null) {
             cameraContainer = getPreviewContainer(context, parent);
+//            cameraContainer.setId(R.id.camera_container_id);
         }
         cameraPreview = cameraContainer.findViewById(R.id.surface_view);
+//        cameraPreview.setId(R.id.camera_preview_id);
         return cameraPreview;
     }
 
@@ -96,7 +97,9 @@ public class YdCameraPreview extends CordovaPlugin {
 
     public void init(JSONArray options) {
         Log.d(TAG, "-----------------onStart-------------");
-        internalInit();
+        if (cameraContainer == null) {
+            internalInit();
+        }
         try {
             int x = options.getInt(0);
             int y = options.getInt(1);
@@ -142,6 +145,17 @@ public class YdCameraPreview extends CordovaPlugin {
         Log.d(TAG, "component stopDetect");
     }
 
+    public void remove() {
+        Log.d(TAG, "component remove");
+        aliveDetector.stopDetect();
+        if (cameraContainer != null) {
+            if (cameraPreview != null) {
+                cameraPreview.setVisibility(View.INVISIBLE);
+                cameraContainer.removeView(cameraPreview);
+            }
+        }
+    }
+
     private void internalInit() {
         Log.d(TAG, "thread name" + Thread.currentThread().getName());
         ViewGroup decorView = (ViewGroup) cordova.getActivity().getWindow().getDecorView();
@@ -149,13 +163,6 @@ public class YdCameraPreview extends CordovaPlugin {
         cameraContainer = getPreviewContainer(cordova.getContext(), contentView);
         cameraPreview = getPreview(cordova.getContext(), contentView);
         cameraPreview.setVisibility(View.INVISIBLE);
-//        cordova.getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                //   cameraPreview.setVisibility(View.INVISIBLE);
-//            }
-//        });
         initListener();
     }
 
