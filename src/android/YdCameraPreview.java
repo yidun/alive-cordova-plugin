@@ -51,9 +51,7 @@ public class YdCameraPreview extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         super.execute(action, args, callbackContext);
-        if (this.callbackContext == null) {
-            this.callbackContext = KeepAliveCallbackContext.newInstance(callbackContext);
-        }
+        this.callbackContext = KeepAliveCallbackContext.newInstance(callbackContext);
         boolean isSuccess = false;
         Log.d(TAG, "action:" + action + " args:" + args);
         if ("init".equals(action)) {
@@ -71,7 +69,12 @@ public class YdCameraPreview extends CordovaPlugin {
             stopDetect();
             isSuccess = true;
         } else if ("remove".equals(action)) {
-            remove();
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    remove();
+                }
+            });
             isSuccess = true;
         } else {
             callbackContext.error("invalid action");
@@ -82,10 +85,8 @@ public class YdCameraPreview extends CordovaPlugin {
     protected NISCameraPreview getPreview(Context context, ViewGroup parent) {
         if (cameraContainer == null) {
             cameraContainer = getPreviewContainer(context, parent);
-//            cameraContainer.setId(R.id.camera_container_id);
         }
         cameraPreview = cameraContainer.findViewById(R.id.surface_view);
-//        cameraPreview.setId(R.id.camera_preview_id);
         return cameraPreview;
     }
 
@@ -135,19 +136,22 @@ public class YdCameraPreview extends CordovaPlugin {
                 Log.d(TAG, "component startDetect");
             }
         });
-
         Log.d(TAG, "component startDetect");
     }
 
 
     public void stopDetect() {
-        aliveDetector.stopDetect();
+        if (aliveDetector != null) {
+            aliveDetector.stopDetect();
+        }
         Log.d(TAG, "component stopDetect");
     }
 
     public void remove() {
         Log.d(TAG, "component remove");
-        aliveDetector.stopDetect();
+        if (aliveDetector != null) {
+            aliveDetector.stopDetect();
+        }
         if (cameraContainer != null) {
             if (cameraPreview != null) {
                 cameraPreview.setVisibility(View.INVISIBLE);
