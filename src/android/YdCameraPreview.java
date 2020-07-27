@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.example.yidunalivedetect.R;
 import com.netease.nis.alivedetected.ActionType;
 import com.netease.nis.alivedetected.AliveDetector;
 import com.netease.nis.alivedetected.DetectedListener;
@@ -18,7 +17,6 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opencv.android.CameraBridgeViewBase;
 
 /**
  * Created by hzhuqi on 2020/6/11
@@ -86,12 +84,12 @@ public class YdCameraPreview extends CordovaPlugin {
         if (cameraContainer == null) {
             cameraContainer = getPreviewContainer(context, parent);
         }
-        cameraPreview = cameraContainer.findViewById(R.id.surface_view);
+        cameraPreview = cameraContainer.findViewById(getViewId(context, "surface_view"));
         return cameraPreview;
     }
 
     protected FrameLayout getPreviewContainer(Context context, ViewGroup parent) {
-        cameraContainer = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.preview_layout, parent);
+        cameraContainer = (FrameLayout) LayoutInflater.from(context).inflate(getLayoutId(context, "preview_layout"), parent);
         return cameraContainer;
     }
 
@@ -110,11 +108,14 @@ public class YdCameraPreview extends CordovaPlugin {
             int time = options.getInt(5);
             updateLayoutParams(x, y, width, height);
             String businessId = options.getString(6);
+            boolean isDebug = options.optBoolean(7);
             aliveDetector = AliveDetector.getInstance();
-            cameraPreview.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
             aliveDetector.init(cordova.getContext(), cameraPreview, businessId);
             if (time != 0) {
                 aliveDetector.setTimeOut(time);
+            }
+            if (isDebug) {
+                aliveDetector.setDebugMode(isDebug);
             }
             aliveDetector.setDetectedListener(detectedListener);
             Log.d("Alive", "component init");
@@ -136,7 +137,6 @@ public class YdCameraPreview extends CordovaPlugin {
                 Log.d(TAG, "component startDetect");
             }
         });
-        Log.d(TAG, "component startDetect");
     }
 
 
@@ -198,9 +198,6 @@ public class YdCameraPreview extends CordovaPlugin {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, callBackJson);
-//                pluginResult.setKeepCallback(true);
-//                callbackContext.sendPluginResult(pluginResult);
                 callbackContext.success(callBackJson, true);
             }
 
@@ -214,9 +211,6 @@ public class YdCameraPreview extends CordovaPlugin {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, callBackJson);
-//                pluginResult.setKeepCallback(true);
-//                callbackContext.sendPluginResult(pluginResult);
                 callbackContext.success(callBackJson, true);
             }
 
@@ -230,9 +224,6 @@ public class YdCameraPreview extends CordovaPlugin {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, callBackJson);
-//                pluginResult.setKeepCallback(true);
-//                callbackContext.sendPluginResult(pluginResult);
                 callbackContext.success(callBackJson, true);
             }
 
@@ -250,9 +241,6 @@ public class YdCameraPreview extends CordovaPlugin {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, callBackJson);
-//                pluginResult.setKeepCallback(true);
-//                callbackContext.sendPluginResult(pluginResult);
                 callbackContext.success(callBackJson, true);
             }
 
@@ -282,9 +270,6 @@ public class YdCameraPreview extends CordovaPlugin {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, callBackJson);
-//                pluginResult.setKeepCallback(true);
-//                callbackContext.sendPluginResult(pluginResult);
                 callbackContext.success(callBackJson, true);
             }
         };
@@ -302,4 +287,13 @@ public class YdCameraPreview extends CordovaPlugin {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
+    private int getLayoutId(Context context, String layoutName) {
+        return context.getResources().getIdentifier(layoutName, "layout", context.getPackageName());
+    }
+
+    private int getViewId(Context context, String viewIdName) {
+        return context.getResources().getIdentifier(viewIdName, "id", context.getPackageName());
+    }
+
 }
