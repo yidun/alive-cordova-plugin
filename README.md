@@ -29,8 +29,12 @@ meteor add cordova:cordova-plugin-yidun-alive-detect@X.X.X
   <string>Allow the app to use your camera</string>
 </gap:config-file>
 ```
-3. ios编译需安装pod环境。配置好开发者账号即可编译
-4.app接入活体设置（如权限设置等）请参考易盾文档
+
+3. 编译: 将引入SDK头文件的.m文件重命名为.mm文件 或者 在Xcode中找到TARGETS-->Build Setting-->Apple Clang - Language-->Compile Source As在这个选项中选择 Objective-C++
+
+4. ios编译需[安装pod环境](https://juejin.im/post/6844903993215303688)。配置好开发者账号即可编译
+
+5. app接入活体设置（如权限设置等）请参考易盾文档
 
 #### Android Quirks
 
