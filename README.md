@@ -65,6 +65,17 @@ meteor add cordova:cordova-plugin-yidun-alive-detect@X.X.X
           } else {
             $actionEl.innerText = '';
           }
+          // 异常类型
+          if ('exception_type' in ev) {
+            // const EXCEPTION_TYPES = {
+            //   1: '保持面部在框内',
+            //   2: '环境光线过暗',
+            //   3: '环境光线过亮',
+            //   4: '请勿抖动手机'
+            // }
+            // TODO: 获取异常类型提示, ev['exception_tip']
+            return;
+          }
           // 检测结果
           if (ev['is_passed']) {
             // TODO: 处理token, ev['token']
