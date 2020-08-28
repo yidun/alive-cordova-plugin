@@ -97,30 +97,66 @@
 }
 
 - (void)liveDetectStatusChange:(NSNotification *)infoNotification {
-    NSDictionary *infoDict = [infoNotification.userInfo objectForKey:@"info"];
-       
+    NSDictionary *userInfo = infoNotification.userInfo;
+    NSString *value = [userInfo objectForKey:@"exception"];
+    NSDictionary *infoDict = [userInfo objectForKey:@"action"];
     NSNumber *key = [[infoDict allKeys] firstObject];
-    int keyValue = [key intValue];
        
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-       
-    NSString *stateTip;
-    if (keyValue == 0) {
-        stateTip = @"正视前方";
-    } else if (keyValue == 1) {
-        stateTip = @"向右转头";
-    } else if (keyValue == 2) {
-        stateTip = @"向左转头";
-    } else if (keyValue == 3) {
-        stateTip = @"张嘴动作";
-    } else if (keyValue == 4) {
-        stateTip = @"眨眼动作";
-    } else {
-        stateTip = @"正视前方";
+    if (value) {
+        NSString *statusText = @"";
+        switch ([value intValue]) {
+            case 1:
+                statusText = @"保持面部在框内";
+                break;
+            case 2:
+                statusText = @"环境光线过暗";
+                break;
+            case 3:
+                statusText = @"环境光线过亮";
+                break;
+            case 4:
+                statusText = @"请勿抖动手机";
+                break;
+            default:
+                statusText = @"";
+                break;
+            }
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setValue:@([value intValue]) forKey:@"exception_type"];
+        [dict setValue:statusText forKey:@"exception_tip"];
+        self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+        [self.pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
+        return;
     }
-       
-    [dict setValue:@(keyValue) forKey:@"action_type"];
-    [dict setValue:stateTip forKey:@"state_tip"];
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    switch ([key intValue]) {
+        case 0:
+             [dict setValue:@"0" forKey:@"action_type"];
+             [dict setValue:@"正视前方" forKey:@"state_tip"];
+            break;
+        case 1:
+            [dict setValue:@"1" forKey:@"action_type"];
+            [dict setValue:@"向右转头" forKey:@"state_tip"];
+            break;
+        case 2:
+            [dict setValue:@"2" forKey:@"action_type"];
+            [dict setValue:@"向左转头" forKey:@"state_tip"];
+            break;
+        case 3:
+            [dict setValue:@"3" forKey:@"action_type"];
+            [dict setValue:@"张嘴动作" forKey:@"state_tip"];
+            break;
+        case 4:
+            [dict setValue:@"4" forKey:@"action_type"];
+            [dict setValue:@"眨眼动作" forKey:@"state_tip"];
+            break;
+        case -1:
+            break;
+        default:
+            break;
+    }
     self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
     [self.pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
@@ -205,6 +241,8 @@
 }
 
 @end
+
+
 
 
 
